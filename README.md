@@ -9,12 +9,13 @@
 <p align="center">
     <a href="https://codeclimate.com/github/Stawa/anvolt.py/maintainability"><img src="https://api.codeclimate.com/v1/badges/780b1926cc1affa10cf4/maintainability" /></a>
     <a href="https://stawa.gitbook.io/estraapi-documentation/"><img src ="https://img.shields.io/static/v1?label=python&message=3.10&color=informational"></a>
+    <a href="https://stawa.gitbook.io/estraapi-documentation/"><img src ="https://img.shields.io/static/v1?label=code style&message=black&color=black"></a>
 </p>
 
 
 ### <span class="emoji">✨</span> Features
 
-Explore the vast array of features available in [anvolt.py](https://anvolt.vercel.app/api/) with this comprehensive list:
+Explore the vast array of features available in **[anvolt.py](https://anvolt.vercel.app/api/)** with this comprehensive list:
 
 - **Roleplaying Images**
 - **Quizzes / Trivia**
@@ -24,7 +25,7 @@ Explore the vast array of features available in [anvolt.py](https://anvolt.verce
 
 ### <span class="emoji">📦</span> Installation
 
-There are two ways to install [anvolt.py](https://anvolt.vercel.app/api/), first you can use the stable release from PyPI:
+There are two ways to install **[anvolt.py](https://anvolt.vercel.app/api/)**, first you can use the stable release from PyPI:
 
 ```bash
 $ pip install anvolt.py
@@ -35,7 +36,7 @@ Second you can use the development version from GitHub to get the latest feature
 ```bash
 $ pip install git+https://github.com/Stawa/anvolt.py/
 ```
-For more information on how to use the package, check out the [documentation](https://anvolt.vercel.app/docs/)
+For more information on how to use the package, check out the **[documentation](https://anvolt.vercel.app/docs/)**
 
 ### <span class="emoji"> 🚀 </span> Quickstart
 
@@ -55,6 +56,6 @@ example()
 
 ### <span class="emoji">🔗</span> Links
 
-- [Documentation](https://anvolt.vercel.app/api/)
-- [Homepage](https://github.com/Stawa/anvolt.py)
-- [Application Programming Interface](https://anvolt.vercel.app/api/)
+- **[Documentation](https://anvolt.vercel.app/api/)**
+- **[Homepage](https://github.com/Stawa/anvolt.py)**
+- **[Application Programming Interface](https://anvolt.vercel.app/api/)**
