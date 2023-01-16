@@ -18,7 +18,7 @@ setup(
         "Documentation": "",
         "Source": "https://github.com/Stawa/anvolt.py",
         "Tracker": "https://github.com/Stawa/anvolt.py/issues",
-        "Changelog": "https://github.com/Stawa/anvolt.py/CHANGELOG.md",
+        "Changelog": "https://github.com/Stawa/anvolt.py/blob/main/CHANGELOG.md",
     },
     keywords=[],
     classifiers=[

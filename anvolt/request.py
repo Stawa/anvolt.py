@@ -1,6 +1,6 @@
 import requests
 import json
-from typing import Union
+from typing import Optional, Union
 from anvolt.errors import InvalidStatusCode, InvalidResponse, APIOffline
 
 
@@ -12,7 +12,9 @@ class HttpRequest:
         if self.custom_url:
             self.url = self.custom_url
 
-    def get(self, route: str, response: str = "json") -> Union[dict, requests.Response]:
+    def get(
+        self, route: Optional[str] = None, response: str = "json"
+    ) -> Union[dict, any]:
         try:
             r = requests.get(self.url if not route else self.url + route)
 
@@ -31,7 +33,9 @@ class HttpRequest:
                 "Please try again later because anvolt-api is currently unavailable."
             )
 
-    def post(self, route: str, json: dict, response: str = "json") -> Union[dict, any]:
+    def post(
+        self, route: Optional[str] = None, json: dict = None, response: str = "json"
+    ) -> Union[dict, any]:
         try:
             r = requests.get(self.url if not route else self.url + route)
 
