@@ -19,7 +19,7 @@ class Utils:
 
     def produce(
         self, total: int, route: str, request_type: str = "url", **kwargs
-    ) -> Union[list[str], Tuple[list[str], bool]]:
+    ) -> Union[List[str], Tuple[List[str], bool]]:
         if total > 15 or total < 2:
             raise InvalidNumber(
                 "Can't generate more than 15 or less than 1 request at a time."

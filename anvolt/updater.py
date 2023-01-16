@@ -27,7 +27,7 @@ class Updater:
         ):
             os.system("pip install anvolt.py --upgrade")
 
-    def check_and_update(self) -> None:
+    def check_for_updates(self) -> None:
         """Check if a new version is available and update if needed."""
         self._fetch_latest_version()
         self._check_version()

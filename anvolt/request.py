@@ -1,6 +1,6 @@
 import requests
 import json
-from typing import Optional, Union
+from typing import Optional, Union, Dict
 from anvolt.errors import InvalidStatusCode, InvalidResponse, APIOffline
 
 
@@ -14,7 +14,7 @@ class HttpRequest:
 
     def get(
         self, route: Optional[str] = None, response: str = "json"
-    ) -> Union[dict, any]:
+    ) -> Union[Dict, any]:
         try:
             r = requests.get(self.url if not route else self.url + route)
 
@@ -35,7 +35,7 @@ class HttpRequest:
 
     def post(
         self, route: Optional[str] = None, json: dict = None, response: str = "json"
-    ) -> Union[dict, any]:
+    ) -> Union[Dict, any]:
         try:
             r = requests.get(self.url if not route else self.url + route)
 

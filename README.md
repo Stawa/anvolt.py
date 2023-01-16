@@ -8,10 +8,9 @@
 
 <p align="center">
     <a href="https://codeclimate.com/github/Stawa/anvolt.py/maintainability"><img src="https://api.codeclimate.com/v1/badges/780b1926cc1affa10cf4/maintainability" /></a>
-    <a href="https://stawa.gitbook.io/estraapi-documentation/"><img src ="https://img.shields.io/static/v1?label=python&message=3.10&color=informational"></a>
-    <a href="https://stawa.gitbook.io/estraapi-documentation/"><img src ="https://img.shields.io/static/v1?label=code style&message=black&color=black"></a>
+    <a href="https://pypi.org/project/anvolt.py"><img src ="https://img.shields.io/pypi/pyversions/anvolt.py"><a>
+    <a href="https://github.com/psf/black"><img src ="https://img.shields.io/static/v1?label=code style&message=black&color=black"></a>
 </p>
-
 
 ### <span class="emoji">✨</span> Features
 
@@ -34,8 +33,9 @@ $ pip install anvolt.py
 Second you can use the development version from GitHub to get the latest features and updates:
 
 ```bash
-$ pip install git+https://github.com/Stawa/anvolt.py/
+$ pip install git+https://github.com/Stawa/anvolt.py
 ```
+
 For more information on how to use the package, check out the **[documentation](https://anvolt.vercel.app/docs/)**
 
 ### <span class="emoji"> 🚀 </span> Quickstart
@@ -52,6 +52,17 @@ def example():
     print(bite.url) # Return str
 
 example()
+```
+
+### <span class="emoji"> 🛠️ </span> Updater
+
+Stay on top of updates and avoid potential errors by using our Updater class. This class ensures you are always using the latest stable version of our API, so you can focus on building your application without worrying about potential changes or bugs.
+
+```py
+from anvolt.updater import Updater
+
+updater = Updater()
+updater.check_for_updates()
 ```
 
 ### <span class="emoji">🔗</span> Links

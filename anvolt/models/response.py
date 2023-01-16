@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from anvolt.errors import InvalidResponse
 
 
@@ -14,7 +14,7 @@ class Responses(object):
             )
 
     @property
-    def url(self) -> Union[str, list[str]]:
+    def url(self) -> Union[str, List[str]]:
         return self._url
 
     @url.setter
