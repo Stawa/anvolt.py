@@ -18,6 +18,8 @@ class Updater:
 
     def _check_version(self) -> None:
         """Check if the installed version is the latest version"""
+        self._fetch_latest_version()
+
         if version.parse(__version__) == version.parse(
             self.latest_version.get("latest_stable_version")
         ):
@@ -29,5 +31,4 @@ class Updater:
 
     def check_for_updates(self) -> None:
         """Check if a new version is available and update if needed."""
-        self._fetch_latest_version()
         self._check_version()
