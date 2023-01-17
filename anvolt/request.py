@@ -37,7 +37,7 @@ class HttpRequest:
         self, route: Optional[str] = None, json: dict = None, response: str = "json"
     ) -> Union[Dict, any]:
         try:
-            r = requests.get(self.url if not route else self.url + route)
+            r = requests.post(self.url if not route else self.url + route, json=json)
 
             if not 200 <= r.status_code < 300:
                 raise InvalidStatusCode(f"{route} returned {r.status_code}")

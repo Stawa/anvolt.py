@@ -27,8 +27,13 @@ class Trivia:
     def add(self, question: str, answer: str, options: dict, **kwargs) -> str:
         self._ensure_file_exists()
         question_id = self._next_id()
-        question_data = {"question": question, "answer": answer, "options": options}
-        question_data.update(kwargs)
+        question_data = {
+            "question": question,
+            "answer": answer,
+            "options": options,
+            "difficulty": kwargs.get("difficulty"),
+            "category": kwargs.get("category"),
+        }
 
         try:
             with open(self.path, "r") as file:
@@ -45,11 +50,13 @@ class Trivia:
         self._ensure_file_exists()
         with open(self.path, "r") as file:
             self.trivia = json.load(file)
+
         if str(question_id) in self.trivia["questions"]:
             self.trivia["questions"].pop(str(question_id))
             with open(self.path, "w") as file:
                 json.dump(self.trivia, file, indent=4, ensure_ascii=False)
             return f"Question (#{question_id}) Removed"
+
         return "Trivia: No Question Found"
 
     def run(self, question_id: Optional[int] = None) -> Tuple:
