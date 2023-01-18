@@ -1,9 +1,15 @@
 from setuptools import setup, find_packages
-from anvolt.__init__ import __version__ as version
+import re
 
 README = ""
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
+
+version = ""
+with open("anvolt/__init__.py") as f:
+    version = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
+    ).group(1)
 
 setup(
     name="anvolt.py",
