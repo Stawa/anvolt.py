@@ -59,7 +59,7 @@ example()
 Stay on top of updates and avoid potential errors by using our Updater class. This class ensures you are always using the latest stable version of our API, so you can focus on building your application without worrying about potential changes or bugs.
 
 ```py
-from anvolt.updater import Updater
+from anvolt import Updater
 
 updater = Updater()
 updater.check_for_updates()

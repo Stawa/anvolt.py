@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from anvolt.__init__ import __version__ as version
 
 README = ""
 with open("README.md", "r", encoding="utf-8") as f:
@@ -6,16 +7,15 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="anvolt.py",
-    version="0.1.1",
+    version=version,
     author="Stawa",
-    description="Test",
+    description="Advanced tool with API integration and additional features",
     long_description=README,
     long_description_content_type="text/markdown",
     license="MIT",
     packages=find_packages(),
     url="https://github.com/Stawa/anvolt.py",
     project_urls={
-        "Documentation": "",
         "Source": "https://github.com/Stawa/anvolt.py",
         "Tracker": "https://github.com/Stawa/anvolt.py/issues",
         "Changelog": "https://github.com/Stawa/anvolt.py/blob/main/CHANGELOG.md",

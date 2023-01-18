@@ -21,9 +21,8 @@ class Sfw:
                 self.http_request.get(route=route),
             )
         )
-        return Responses(
-            url=url, response_code=response.status_code, original_response=response
-        )
+        status_code = response.get("status_code")
+        return Responses(url=url, status_code=status_code, original_response=response)
 
     def bite(self, produce: Optional[int] = None) -> Responses:
         return self._make_request(route=Route.BITE.value, produce=produce)

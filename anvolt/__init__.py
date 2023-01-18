@@ -1,8 +1,11 @@
-from .api import Sfw, Nsfw
+from anvolt.api import Sfw, Nsfw
+from anvolt.trivia import Trivia
+from anvolt.updater import Updater
+from anvolt.utils import Utils
 from typing import Optional
 
 __name__ = "anvolt.py"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Stawa"
 __license__ = "MIT"
 
