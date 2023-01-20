@@ -20,3 +20,9 @@ class Route(Enum):
     YURI = "nsfw/yuri"
     YAOI = "nsfw/yaoi"
     KILL = "nsfw/kill"
+
+    # Games Category
+    ANIGAMES_TRUTH = "anigames/truth"
+    ANIGAMES_DARE = "anigames/dare"
+    GAMES_TRUTH = "games/truth"
+    GAMES_DARE = "games/dare"
