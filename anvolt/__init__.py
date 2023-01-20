@@ -1,7 +1,4 @@
 from anvolt.api import Sfw, Nsfw, Games
-from anvolt.trivia import Trivia
-from anvolt.updater import Updater
-from anvolt.utils import Utils
 from typing import Optional
 
 __name__ = "anvolt.py"
