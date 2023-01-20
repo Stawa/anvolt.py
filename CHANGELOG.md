@@ -3,9 +3,26 @@
 A notice detailing the changes made in each version of the project will be included in every release.
 Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you believe there is something missing or an error.
 
+### 「0.1.2」 » Jan. 20, 2023
+
+#### Added Features
+
+- A new `Games` class has been added, which allows fetching games category from the API.
+
+#### Removed Features
+
+- Imports for `Utils`, `Trivia`, and `Updater` have been removed as they were causing errors.
+
+##### Package Updates
+
+- Additional classifiers, `Typing :: Typed` and `Intended Audience :: Developers`, have been added to the package metadata.
+
 ### 「0.1.2」 » Jan. 18, 2023
 
-#### New Feature
+<details>
+    <summary><span class="emoji">📄</span><b>View Previous Updates</b></summary>
+
+#### New Features
 
 - Added import for Utils, Trivia, and Updater modules to the `anvolt.__init__.py` file to make it more easier to use them across the project
 
@@ -16,6 +33,8 @@ Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you b
 ##### Package Updates
 
 - Updated the package description in the `setup.py`
+
+</details>
 
 ### 「0.1.1」 » Jan. 17, 2023
 
