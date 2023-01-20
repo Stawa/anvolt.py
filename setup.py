@@ -33,5 +33,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
+        "Typing :: Typed",
+        "Intended Audience :: Developers",
     ],
 )

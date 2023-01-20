@@ -7,9 +7,10 @@
 </h2>
 
 <p align="center">
-    <a href="https://codeclimate.com/github/Stawa/anvolt.py/maintainability"><img src="https://api.codeclimate.com/v1/badges/780b1926cc1affa10cf4/maintainability" /></a>
-    <a href="https://pypi.org/project/anvolt.py"><img src ="https://img.shields.io/pypi/pyversions/anvolt.py"><a>
-    <a href="https://github.com/psf/black"><img src ="https://img.shields.io/static/v1?label=code style&message=black&color=black"></a>
+    <a href="https://codeclimate.com/github/Stawa/anvolt.py/maintainability"><img src="https://api.codeclimate.com/v1/badges/780b1926cc1affa10cf4/maintainability"></a>
+    <a href="https://pypi.org/project/anvolt.py"><img src="https://img.shields.io/pypi/pyversions/anvolt.py"><a>
+    <a href="https://github.com/psf/black"><img src="https://img.shields.io/static/v1?label=code style&message=black&color=black"></a>
+    <a href="https://pypi.org/project/anvolt.py"><img src="https://static.pepy.tech/badge/anvolt-py/month"/></a>
 </p>
 
 ### <span class="emoji">✨</span> Features
