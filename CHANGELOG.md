@@ -3,13 +3,14 @@
 A notice detailing the changes made in each version of the project will be included in every release.
 Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you believe there is something missing or an error.
 
-### 「0.1.3」 - Jan. 22, 2023
+### 「0.1.3」 - Jan. 21, 2023
 
 #### New Features
 
 - A Command-Line Interface (CLI) has been added for testing and retrieving endpoint lists for specific categories.
     - `anvolt requests -c <category> -e <endpoint>`: Executes a test request to the specified endpoint in the chosen category.
     - `anvolt category-help`: Displays a list of available categories and their respective endpoints.
+    - `anvolt save -c <category> -e <endpoint>`: Retrieves an image from the API and saves it to the current directory set in the command prompt
 
 #### Package Updates
 

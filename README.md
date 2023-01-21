@@ -70,15 +70,20 @@ updater.check_for_updates()
 
 The anvolt package provides a Command-Line Interface (CLI) for easy access to its features. To test requests and retrieve a list of endpoints for a specific category, use the following commands:
 
-```
+```bash
 $ anvolt category-help
 ```
 This command displays a list of available categories and their respective endpoints. It allows users to see the different categories available and the endpoints associated with each one.
 
-```
+```bash
 $ anvolt requests --category <category> --endpoint <endpoint>
 ```
 This command will execute a test request to the specified endpoint in the chosen category. The `--category` and `--endpoint` options are required for this command to work properly.
+
+```
+$ anvolt save --category <category> --endpoint <endpoint>
+```
+This command retrieves an image from the API and saves it to the current directory set in the command prompt, such as `C:\Users\Stawa\Desktop\Folder`
 
 ### <span class="emoji">🔗</span> Links
 

@@ -1,5 +1,6 @@
 from anvolt.__init__ import __version__, __name__, __author__
 from anvolt.request import HttpRequest
+from anvolt.utils import Utils
 from tabulate import tabulate
 import click
 
@@ -31,6 +32,25 @@ def menu():
 def category_help():
     http_request = HttpRequest()
     click.echo(http_request.get(route="category"))
+
+
+@main.command(help="Retrieves images from the API and saves them locally.")
+@click.option(
+    "--category",
+    "-c",
+    help="Selects a category to retrieve the corresponding endpoint response.",
+    required=True,
+)
+@click.option(
+    "--endpoint",
+    "-e",
+    help="Retrieves endpoint response based on the previously selected category.",
+    required=True,
+)
+def save(category: str, endpoint: str):
+    utils = Utils()
+    save_image = utils.save(route=f"{category}/{endpoint}")
+    click.echo(save_image)
 
 
 @main.command(help="Executes a test GET request to the specified endpoint.")

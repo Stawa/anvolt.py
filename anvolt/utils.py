@@ -30,12 +30,12 @@ class Utils:
         ]
 
     def save(
-        self, category: str, total: int = 1, filename: Optional[str] = None
+        self, route: str, total: int = 1, filename: Optional[str] = None
     ) -> List[Tuple[str, str]]:
         self._ensure_folder_exist("AnVoltPicture")
 
         if not filename:
-            filename = category.split("/")[1].title()
+            filename = route.split("/")[1].title()
 
         if total > 15 or total < 1:
             raise InvalidNumber(
@@ -43,12 +43,12 @@ class Utils:
             )
 
         if total == 1:
-            req = self.http_request.get(route=category)
+            req = self.http_request.get(route=route)
             return self._save_image(file_name=filename, url=req.get("url"))
 
         image_urls, image_paths = [], []
         for i in range(total):
-            req = self.http_request.get(route=category)
+            req = self.http_request.get(route=route)
             url = req.get("url")
 
             file_name = f"{filename}_{i+1}"
