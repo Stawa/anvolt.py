@@ -99,11 +99,13 @@ class Trivia:
 
         for question_id, question in questions.items():
             options = [f"{k}. {v}" for k, v in question["options"].items()]
+
             print(f"Question: {question['question']}")
             print(f"Options: {', '.join(options)}")
             print(f"Difficulty: {question.get('difficulty')}")
             print(f"Category: {question.get('category')}")
             answer = input("Answer: ")
+
             if answer.lower() == question["answer"].lower():
                 score += 1
                 print("That's correct!")

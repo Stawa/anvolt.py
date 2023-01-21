@@ -66,8 +66,22 @@ updater = Updater()
 updater.check_for_updates()
 ```
 
+### <span class="emoji">💻</span> CLI / Command-Line Interface
+
+The anvolt package provides a Command-Line Interface (CLI) for easy access to its features. To test requests and retrieve a list of endpoints for a specific category, use the following commands:
+
+```
+$ anvolt category-help
+```
+This command displays a list of available categories and their respective endpoints. It allows users to see the different categories available and the endpoints associated with each one.
+
+```
+$ anvolt requests --category <category> --endpoint <endpoint>
+```
+This command will execute a test request to the specified endpoint in the chosen category. The `--category` and `--endpoint` options are required for this command to work properly.
+
 ### <span class="emoji">🔗</span> Links
 
-- **[Documentation](https://anvolt.vercel.app/api/)**
+- **[Documentation](https://anvolt.vercel.app/docs/)**
 - **[Homepage](https://github.com/Stawa/anvolt.py)**
 - **[Application Programming Interface](https://anvolt.vercel.app/api/)**
