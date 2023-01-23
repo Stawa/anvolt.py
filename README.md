@@ -18,11 +18,13 @@
 
 Explore the vast array of features available in **[anvolt.py](https://anvolt.vercel.app/api/)** with this comprehensive list:
 
-- **Roleplaying Images**
-- **Quizzes / Trivia**
-- **Anime Images (SFW / NSFW)**
-- **Client-Side Support**
-- **Ease-of-Use Codes**
+- **Roleplaying Images**: Add high-quality images for immersive roleplaying experiences
+- **Quizzes / Trivia**: Incorporate interactive quizzes and trivia games to engage users
+- **Anime Images (SFW / NSFW)**: Include a variety of anime-related images, including both safe-for-work and not-safe-for-work options
+- **Client-Side Support**: Provide support for client-side implementation, allowing for seamless integration with existing projects
+- **Ease-of-Use Codes**: Design the package with simplicity and ease-of-use in mind, offering user-friendly codes and documentation
+- **Twitch API Integration**: Utilize the Twitch API to retrieve and display real-time data from Twitch streams
+- **Command-Line Interface**: Include a Command-Line Interface (CLI) for user-friendly access and control of the package's features
 
 ### <span class="emoji">📦</span> Installation
 
@@ -74,16 +76,19 @@ The anvolt package provides a Command-Line Interface (CLI) for easy access to it
 ```bash
 $ anvolt category-help
 ```
+
 This command displays a list of available categories and their respective endpoints. It allows users to see the different categories available and the endpoints associated with each one.
 
 ```bash
 $ anvolt requests --category <category> --endpoint <endpoint>
 ```
+
 This command will execute a test request to the specified endpoint in the chosen category. The `--category` and `--endpoint` options are required for this command to work properly.
 
 ```
 $ anvolt save --category <category> --endpoint <endpoint>
 ```
+
 This command retrieves an image from the API and saves it to the current directory set in the command prompt, such as `C:\Users\Stawa\Desktop\Folder`
 
 ### <span class="emoji">🔗</span> Links
