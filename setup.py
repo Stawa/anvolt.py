@@ -38,7 +38,17 @@ setup(
         "Tracker": "https://github.com/Stawa/anvolt.py/issues",
         "Changelog": "https://github.com/Stawa/anvolt.py/blob/main/CHANGELOG.md",
     },
-    keywords=["api", "anime", "games", "roleplay", "images", "trivia"],
+    keywords=[
+        "api",
+        "anime",
+        "games",
+        "roleplay",
+        "images",
+        "trivia",
+        "discord",
+        "webhooks",
+        "twitch",
+    ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Programming Language :: Python :: 3.9",
@@ -47,5 +57,7 @@ setup(
         "Natural Language :: English",
         "Typing :: Typed",
         "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Environment :: Console",
     ],
 )

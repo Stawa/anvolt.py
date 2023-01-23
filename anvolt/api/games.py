@@ -1,6 +1,6 @@
 from anvolt.request import HttpRequest
 from anvolt.models.response import Responses
-from anvolt.models.route import Route
+from anvolt.models.enums import Route
 from anvolt.utils import Utils
 from typing import Optional
 

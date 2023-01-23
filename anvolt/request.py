@@ -1,7 +1,7 @@
 import requests
 import json
 from typing import Optional, Union, Dict
-from anvolt.errors import InvalidStatusCode, InvalidResponse, APIOffline
+from anvolt.models.errors import InvalidStatusCode, InvalidResponse, APIOffline
 
 
 class HttpRequest:

@@ -3,21 +3,44 @@
 A notice detailing the changes made in each version of the project will be included in every release.
 Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you believe there is something missing or an error.
 
-### 「0.1.3」 - Jan. 21, 2023
+### 「0.1.5」 - Jan. 24, 2023
+
+#### New Features
+
+- Introducing anvolt.notifier.TwitchClient to interact with Twitch API
+- Introducing anvolt.models.TwitchModels to handle Twitch models
+- Introducing anvolt.notifier.NotifierClient for sending webhook notification
+
+#### Changed Features
+
+- Renamed `route.py` to `enums.py` for better organization and clarity
+- Moved `errors.py` to `models.errors` for better organization and clarity
+
+
+#### Package Updates
+
+- Updated `setup.py` with new keywords `Operating System :: OS Independent` and `Environment :: Console` to support a wider range of platforms and environments.
+
+### 「0.1.4」 - Jan. 21, 2023
+
+<details>
+    <summary><span class="emoji">📄</span><b>View Previous Updates</b></summary>
 
 #### New Features
 
 - A Command-Line Interface (CLI) has been added for testing and retrieving endpoint lists for specific categories.
-    - `anvolt requests -c <category> -e <endpoint>`: Executes a test request to the specified endpoint in the chosen category.
-    - `anvolt category-help`: Displays a list of available categories and their respective endpoints.
-    - `anvolt save -c <category> -e <endpoint>`: Retrieves an image from the API and saves it to the current directory set in the command prompt
+  - `anvolt requests -c <category> -e <endpoint>`: Executes a test request to the specified endpoint in the chosen category.
+  - `anvolt category-help`: Displays a list of available categories and their respective endpoints.
+  - `anvolt save -c <category> -e <endpoint>`: Retrieves an image from the API and saves it to the current directory set in the command prompt
 
 #### Package Updates
 
 - A `requirements.txt` file has been added to manage package dependencies.
 - `install_requires`, `entry_points`, `extras_require`, and `keywords` have been added to the package's setup configuration to improve the package's installation and distribution.
 
-### 「0.1.2」 » Jan. 20, 2023
+</details>
+
+### 「0.1.3」 » Jan. 20, 2023
 
 <details>
     <summary><span class="emoji">📄</span><b>View Previous Updates</b></summary>

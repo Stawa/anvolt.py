@@ -1,5 +1,5 @@
 from anvolt.request import HttpRequest
-from anvolt.errors import InvalidNumber
+from anvolt.models.errors import InvalidNumber
 from typing import Optional, Union, Tuple, List
 import os
 

@@ -1,5 +1,5 @@
 from typing import Union, List
-from anvolt.errors import InvalidResponse
+from anvolt.models.errors import InvalidResponse
 
 
 class Responses(object):
