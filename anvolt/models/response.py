@@ -7,16 +7,17 @@ class Responses(object):
         self.url = kwargs.get("url")
         self.status_response = kwargs.get("status_response")
         self.original_response = kwargs.get("original_response")
+        self._check_for_errors()
 
+    def _check_for_errors(self):
         if isinstance(self.original_response, dict):
-            if self.original_response and self.original_response.get("error"):
+            if self.original_response.get("error"):
                 raise InvalidResponse(
                     f"Error reason: {self.original_response.get('error')}"
                 )
-
-        if isinstance(self.original_response, list):
+        elif isinstance(self.original_response, list):
             for response in self.original_response:
-                if response and response.get("error"):
+                if response.get("error"):
                     raise InvalidResponse(f"Error reason: {response.get('error')}")
 
     @property
