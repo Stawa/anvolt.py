@@ -10,15 +10,20 @@ class Responses(object):
         self._check_for_errors()
 
     def _check_for_errors(self):
-        if isinstance(self.original_response, dict):
-            if self.original_response.get("error"):
-                raise InvalidResponse(
-                    f"Error reason: {self.original_response.get('error')}"
-                )
+        if isinstance(self.original_response, dict) and self.original_response.get(
+            "error"
+        ):
+            raise InvalidResponse(
+                f"Error reason: {self.original_response.get('error')}"
+            )
         elif isinstance(self.original_response, list):
-            for response in self.original_response:
-                if response.get("error"):
-                    raise InvalidResponse(f"Error reason: {response.get('error')}")
+            errors = [
+                response.get("error")
+                for response in self.original_response
+                if response.get("error")
+            ]
+            if errors:
+                raise InvalidResponse(f"Error reason: {errors}")
 
     @property
     def url(self) -> Union[str, List[str]]:
