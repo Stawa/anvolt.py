@@ -11,11 +11,17 @@ Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you b
 - Introducing anvolt.models.TwitchModels to handle Twitch models
 - Introducing anvolt.notifier.NotifierClient for sending webhook notification
 
+#### Bug Fix
+
+- Fixed an issue that caused an error to be raised when using the produce argument and changing the `status_code` variable to `status_response`
+
 #### Changed Features
 
-- Renamed `route.py` to `enums.py` for better organization and clarity
-- Moved `errors.py` to `models.errors` for better organization and clarity
-
+- Renamed the `route.py` file to `enums.py` for better organization and clarity.
+- Moved the `errors.py` file to the `models.errors` package for better organization and clarity.
+- Updated the typing of the `original_response` property from `dict` to `Union[List[Dict], Dict]` to support lists of dictionaries.
+- Updated the typing of the `status_response` property from `int` to `Union[List[int], int]` to support lists of integers.
+- Changed the return type of the `produce` function from `Union[List[str], Tuple[List[str], bool]]` to `Tuple[List[str], List[dict]]` to return a tuple of lists containing the URLs and responses, respectively.
 
 #### Package Updates
 

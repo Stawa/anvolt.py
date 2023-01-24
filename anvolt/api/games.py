@@ -13,16 +13,25 @@ class Games:
         self.utils = Utils()
 
     def _make_request(self, route: str, produce: Optional[int] = None) -> Responses:
-        url, response = (
-            (self.utils.produce(total=produce, route=route), None)
+        url, original_response = (
+            self.utils.produce(total=produce, route=route)
             if produce
             else (
                 self.http_request.get(route=route).get("url"),
                 self.http_request.get(route=route),
             )
         )
-        status_code = response.get("status_code")
-        return Responses(url=url, status_code=status_code, original_response=response)
+        status_response = (
+            [response.get("status_response") for response in original_response]
+            if produce
+            else original_response.get("status_response")
+        )
+
+        return Responses(
+            url=url,
+            status_response=status_response,
+            original_response=original_response,
+        )
 
     def truth(
         self, produce: Optional[int] = None, theme: Optional[Route] = Route.GAMES_TRUTH

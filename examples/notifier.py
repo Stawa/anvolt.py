@@ -4,8 +4,8 @@ from anvolt.notifier import NotifierClient
 import asyncio
 
 client = NotifierClient(
-    client_id="CLIENT_ID",
-    client_secret="CLIENT_SECRET",
+    client_id="",
+    client_secret="",
     webhook_url="WEBHOOK_URL",
 )
 

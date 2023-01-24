@@ -1,6 +1,6 @@
 from anvolt.request import HttpRequest
 from anvolt.models.errors import InvalidNumber
-from typing import Optional, Union, Tuple, List
+from typing import Optional, Tuple, List
 import os
 
 
@@ -18,16 +18,20 @@ class Utils:
         return f"File {file_name} saved in AnVoltPicture"
 
     def produce(
-        self, total: int, route: str, request_type: str = "url", **kwargs
-    ) -> Union[List[str], Tuple[List[str], bool]]:
-        if total > 15 or total < 2:
+        self, total: int, route: str, request_type: str = "url"
+    ) -> Tuple[List[str], List[dict]]:
+        if not 2 <= total <= 15:
             raise InvalidNumber(
                 "Can't generate more than 15 or less than 1 request at a time."
             )
-        return [
-            self.http_request.get(route=route).get(request_type)
-            for _ in range(int(total))
-        ]
+
+        urls, responses = [], []
+        for _ in range(total):
+            res = self.http_request.get(route=route)
+            urls.append(res[request_type])
+            responses.append(res)
+
+        return urls, responses
 
     def save(
         self, route: str, total: int = 1, filename: Optional[str] = None
@@ -37,7 +41,7 @@ class Utils:
         if not filename:
             filename = route.split("/")[1].title()
 
-        if total > 15 or total < 1:
+        if not 1 <= total <= 15:
             raise InvalidNumber(
                 "Can't generate more than 15 or less than 1 request at a time."
             )
