@@ -7,14 +7,14 @@ Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you b
 
 #### New Features
 
-- Added new `waifu` and `husbando` to `Games` with anime themes
-- Added new property `text`, `player`, `character_name` and `percentage`
-- Added new enums `ANIGAMES_WAIFU`, `ANIGAMES_HUSBANDO`, `ANIGAMES_SHIPPER`, `ANIGAMES_OPTION_WAIFU` and `ANIGAMES_OPTION_HUSBANDO`
+- Introducing new anime-themed `waifu` and `husbando` options in the `Games` feature
+- Added `text`, `player`, `character_name`, and `percentage` properties
+- Added new enumerations: `ANIGAMES_WAIFU`, `ANIGAMES_HUSBANDO`, `ANIGAMES_SHIPPER`, `ANIGAMES_OPTION_WAIFU`, and `ANIGAMES_OPTION_HUSBANDO` to provide more options
 
 #### Bug Fix
 
-- Fixed double `.value` on `Games.truth` function that might return `None`
-- Fixed different response on `original_response` when not using produce argument
+- Fixed an issue where the `Games.truth` function was returning ``None` due to a double `.value`
+- Fixed a bug where the `original_response` was returning different results when the produce argument was not used.
 
 ### 「0.1.5」 - Jan. 24, 2023
 
