@@ -3,7 +3,23 @@
 A notice detailing the changes made in each version of the project will be included in every release.
 Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you believe there is something missing or an error.
 
+### 「0.1.6」 - Jan. 25, 2023
+
+#### New Features
+
+- Added new `waifu` and `husbando` to `Games` with anime themes
+- Added new property `text`, `player`, `character_name` and `percentage`
+- Added new enums `ANIGAMES_WAIFU`, `ANIGAMES_HUSBANDO`, `ANIGAMES_SHIPPER`, `ANIGAMES_OPTION_WAIFU` and `ANIGAMES_OPTION_HUSBANDO`
+
+#### Bug Fix
+
+- Fixed double `.value` on `Games.truth` function that might return `None`
+- Fixed different response on `original_response` when not using produce argument
+
 ### 「0.1.5」 - Jan. 24, 2023
+
+<details>
+    <summary><span class="emoji">📄</span><b>View Previous Updates</b></summary>
 
 #### New Features
 
@@ -26,6 +42,8 @@ Please submit an **[issue](https://github.com/Stawa/anvolt.py/issues)** if you b
 #### Package Updates
 
 - Updated `setup.py` with new keywords `Operating System :: OS Independent` and `Environment :: Console` to support a wider range of platforms and environments.
+
+</details>
 
 ### 「0.1.4」 - Jan. 21, 2023
 

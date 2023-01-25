@@ -5,7 +5,11 @@ from anvolt.models.errors import InvalidResponse
 class Responses(object):
     def __init__(self, **kwargs):
         self.url = kwargs.get("url")
+        self.text = kwargs.get("text")
         self.status_response = kwargs.get("status_response")
+        self.player = kwargs.get("player")
+        self.character_name = kwargs.get("character_name")
+        self.percentage = kwargs.get("percentage")
         self.original_response = kwargs.get("original_response")
         self._check_for_errors()
 
@@ -34,12 +38,44 @@ class Responses(object):
         self._url = value
 
     @property
+    def text(self) -> Union[str, List[str]]:
+        return self._text
+
+    @text.setter
+    def text(self, value) -> None:
+        self._text = value
+
+    @property
     def status_response(self) -> Union[List[int], int]:
         return self._status_response
 
     @status_response.setter
     def status_response(self, value) -> None:
         self._status_response = value
+
+    @property
+    def player(self) -> Union[str, None]:
+        return self._player
+
+    @player.setter
+    def player(self, value) -> None:
+        self._player = value
+
+    @property
+    def character_name(self) -> str:
+        return self._character_name
+
+    @character_name.setter
+    def character_name(self, value) -> None:
+        self._character_name = value
+
+    @property
+    def percentage(self) -> Union[str, None]:
+        return self._percentage
+
+    @percentage.setter
+    def percentage(self, value) -> None:
+        self._percentage = value
 
     @property
     def original_response(self) -> Union[List[Dict], Dict]:

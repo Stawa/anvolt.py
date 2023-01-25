@@ -2,7 +2,7 @@ from anvolt.api import Sfw, Nsfw, Games
 from typing import Optional
 
 __name__ = "anvolt.py"
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 __author__ = "Stawa"
 __license__ = "MIT"
 

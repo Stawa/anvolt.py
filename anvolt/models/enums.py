@@ -24,8 +24,15 @@ class Route(Enum):
     # Games Category
     ANIGAMES_TRUTH = "anigames/truth"
     ANIGAMES_DARE = "anigames/dare"
+    ANIGAMES_WAIFU = "anigames/waifu"
+    ANIGAMES_HUSBANDO = "anigames/husbando"
+    ANIGAMES_SHIPPER = "anigames/shipper"
     GAMES_TRUTH = "games/truth"
     GAMES_DARE = "games/dare"
+
+    # AniGames Argument Option
+    ANIGAMES_OPTION_WAIFU = "waifu"
+    ANIGAMES_OPTION_HUSBANDO = "husbando"
 
 
 class TwitchModels(Enum):

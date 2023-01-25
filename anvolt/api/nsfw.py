@@ -12,13 +12,18 @@ class Nsfw:
         self.http_request = HttpRequest()
         self.utils = Utils()
 
-    def _make_request(self, route: str, produce: Optional[int] = None) -> Responses:
+    def _make_request(
+        self, route: str, produce: Optional[int] = None, response: str = "url"
+    ) -> Responses:
+        if not produce:
+            res = self.http_request.get(route=route)
+
         url, original_response = (
-            self.utils.produce(total=produce, route=route)
+            self.utils.produce(total=produce, route=route, request_type=response)
             if produce
             else (
-                self.http_request.get(route=route).get("url"),
-                self.http_request.get(route=route),
+                res.get(response),
+                res,
             )
         )
         status_response = (
