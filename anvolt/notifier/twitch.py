@@ -1,5 +1,9 @@
+import asyncio
 import aiohttp
+from anvolt.models import errors
 from typing import Union, Dict
+
+e = errors
 
 
 class TwitchClient:
@@ -7,14 +11,24 @@ class TwitchClient:
         self.client_id = client_id
         self.client_secret = client_secret
         self.bearer_token = None
+        self.session = None
+
+    async def set_session(self) -> None:
+        loop = asyncio.get_event_loop()
+        self.session = aiohttp.ClientSession(
+            timeout=aiohttp.ClientTimeout(total=10, connect=3), loop=loop
+        )
 
     async def _get_bearer_token(self) -> str:
+        await self.set_session()
+
         data = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "grant_type": "client_credentials",
         }
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 "https://id.twitch.tv/oauth2/token", data=data, headers=headers
@@ -23,6 +37,8 @@ class TwitchClient:
                 return response_json["access_token"]
 
     async def retrieve_user(self, username: str) -> str:
+        await self.set_session()
+
         if not self.bearer_token:
             self.bearer_token = await self._get_bearer_token()
 
@@ -38,6 +54,8 @@ class TwitchClient:
                 return response_json["data"][0]
 
     async def retrieve_stream(self, user: Union[str, int]) -> Dict:
+        await self.set_session()
+
         if not self.bearer_token:
             self.bearer_token = await self._get_bearer_token()
 
@@ -55,9 +73,11 @@ class TwitchClient:
                 if response_json["data"]:
                     return response_json["data"][0]
                 else:
-                    raise Exception("User is not currently live.")
+                    raise e.UserOffline("User is not currently live.")
 
     async def is_live(self, user: Union[str, int]) -> bool:
+        await self.set_session()
+
         if not self.bearer_token:
             self.bearer_token = await self._get_bearer_token()
 
