@@ -1,6 +1,6 @@
 from anvolt.models import MusicPropertiesEnums, MusicProperty
 from datetime import datetime
-from typing import List, Union
+from typing import List, Union, Optional
 from math import ceil
 import discord
 
@@ -27,17 +27,15 @@ class PageEmbed:
         page_on: Union[TITLE, FOOTER] = FOOTER,
         value_fields: str = None,
         assets_format: List[MusicPropertiesEnums] = None,
-        **kwargs,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        footer: Optional[str] = None,
+        color: Optional[str] = None,
+        timestamp: datetime = datetime.utcnow(),
     ):
         num_embeds = ceil(len(self.messages) / self.fields)
         enum_names = [asset.name.lower() for asset in assets_format]
         embeds = []
-
-        title = kwargs.get("title", "")
-        description = kwargs.get("description", "")
-        footer = kwargs.get("footer", "")
-        color = kwargs.get("color", discord.Color.from_rgb(170, 255, 0))
-        timestamp = kwargs.get("timestamp", datetime.utcnow())
 
         for num in range(num_embeds):
             embed = discord.Embed(
