@@ -1,4 +1,5 @@
 from __future__ import annotations
+import functools
 from anvolt.discord.music.audio import AudioStreamFetcher, YoutubeUri, FFMPEG_OPTIONS
 from anvolt.models import MusicProperty, MusicEnums, MusicPlatform, QueueSession, errors
 from anvolt.discord import Event
@@ -119,12 +120,15 @@ class AnVoltMusic(Event, AudioStreamFetcher):
             ),
         )
 
-    def ensure_connection(func: Callable):
-        async def wrapper(self, ctx, *args, **kwargs):
-            if await self._check_connection(ctx):
-                return await func(self, ctx, *args, **kwargs)
+    def ensure_connection() -> Callable:
+        def decorator(func: Callable):
+            async def wrapper(self, ctx, *args, **kwargs):
+                if await self._check_connection(ctx):
+                    return await func(self, ctx, *args, **kwargs)
 
-        return wrapper
+            return wrapper
+
+        return decorator
 
     def add_queue(self, ctx: commands.Context, player: MusicProperty) -> None:
         self.queue.setdefault(ctx.guild.id, QueueSession()).queue.append(player)
@@ -199,13 +203,13 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         self.bot.loop.create_task(self._check_inactivity(ctx))
         return channel, voice_client
 
-    @ensure_connection
+    @ensure_connection()
     async def disconnect(self, ctx: commands.Context) -> Optional[VocalGuildChannel]:
         channel = ctx.voice_client.channel
         await ctx.voice_client.disconnect(force=True)
         return channel
 
-    @ensure_connection
+    @ensure_connection()
     async def volume(self, ctx: commands.Context, volume: int = None) -> Optional[int]:
         currently_playing = self.currently_playing.get(ctx.guild.id)
 
@@ -233,7 +237,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         return round(ctx.voice_client.source.volume * 100)
 
-    @ensure_connection
+    @ensure_connection()
     async def pause(self, ctx: commands.Context) -> Optional[bool]:
         if not ctx.voice_client.is_playing():
             await self.call_event(
@@ -256,7 +260,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         now_playing.last_time = time.time()
         return True
 
-    @ensure_connection
+    @ensure_connection()
     async def resume(self, ctx: commands.Context) -> Optional[bool]:
         if not ctx.voice_client.is_paused():
             await self.call_event(
@@ -271,7 +275,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         now_playing.current_duration += str(time.time() - now_playing.last_time)
         return True
 
-    @ensure_connection
+    @ensure_connection()
     async def skip(self, ctx: commands.Context) -> Optional[bool]:
         if not ctx.voice_client.is_playing():
             await self.call_event(
@@ -286,7 +290,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         return True
 
-    @ensure_connection
+    @ensure_connection()
     async def loop(self, ctx: commands.Context):
         if not ctx.guild.id in self.currently_playing:
             await self.call_event(
@@ -305,7 +309,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         return current_playing.loop
 
-    @ensure_connection
+    @ensure_connection()
     async def queueloop(self, ctx: commands.Context):
         if not ctx.guild.id in self.currently_playing:
             await self.call_event(
@@ -337,7 +341,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         return current_playing.loop
 
-    @ensure_connection
+    @ensure_connection()
     async def play(
         self, ctx: commands.Context, query: Union[str, MusicProperty], **kwargs
     ) -> Optional[MusicProperty]:

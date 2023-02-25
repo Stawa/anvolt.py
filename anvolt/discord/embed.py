@@ -27,49 +27,48 @@ class PageEmbed:
         page_on: Union[TITLE, FOOTER] = FOOTER,
         value_fields: str = None,
         assets_format: List[MusicPropertiesEnums] = None,
-        title: Optional[str] = None,
-        description: Optional[str] = None,
-        footer: Optional[str] = None,
-        color: Optional[str] = None,
+        title: Optional[str] = "",
+        description: Optional[str] = "",
+        footer: Optional[str] = "",
+        color: discord.Color = discord.Color.from_rgb(170, 255, 0),
         timestamp: datetime = datetime.utcnow(),
-    ):
+    ) -> List[discord.Embed]:
         num_embeds = ceil(len(self.messages) / self.fields)
-        enum_names = [asset.name.lower() for asset in assets_format]
+        enum_names = (
+            [asset.name.lower() for asset in assets_format] if assets_format else []
+        )
         embeds = []
 
         for num in range(num_embeds):
+            page = f"Page {num+1}/{num_embeds}"
+
+            page += title if page_on == TITLE else ""
+            page += footer if page_on == FOOTER else ""
+
+            start = num * self.fields
+            end = start + self.fields
+            fields = [
+                {"index": index, "value": value}
+                for index, value in enumerate(self.messages[start:end], start)
+            ]
+
             embed = discord.Embed(
-                title=f"Page {num+1}/{num_embeds} {title}"
-                if page_on == TITLE
-                else title,
+                title=title if not page_on == TITLE else page,
                 description=description,
                 color=color,
                 timestamp=timestamp,
-            )
-            embed.set_footer(
-                text=f"Page {num+1}/{num_embeds}" if page_on == FOOTER else footer
-            )
+            ).set_footer(text=footer if not page_on == FOOTER else page)
 
-            fields = self._get_fields(num)
             for field in fields:
                 values = [
                     getattr(field["value"], enum_name) for enum_name in enum_names
                 ]
                 embed.add_field(
                     name=str(field["index"] + 1),
-                    value=value_fields.format(*values),
+                    value=value_fields.format(*values) if value_fields else None,
                     inline=False,
                 )
 
             embeds.append(embed)
 
         return embeds
-
-    def _get_fields(self, num):
-        start = num * self.fields
-        end = start + self.fields
-        fields = [
-            {"index": index, "value": value}
-            for index, value in enumerate(self.messages[start:end], start)
-        ]
-        return fields
