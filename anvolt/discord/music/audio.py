@@ -67,17 +67,28 @@ class AudioStreamFetcher:
             await self.session.close()
             return video_ids
 
+    async def _retreive_youtube_playlist(self, playlist_id: str) -> List[str]:
+        await self.set_session()
+
+        async with self.session.get(
+            f"https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={playlist_id}&key=AIzaSyB4J6Am8yz49lw_N6LD29fae2F6v5cSiC8",
+        ) as response:
+            data = await response.json()
+            video_ids = [
+                f'https://www.youtube.com/watch?v={item["snippet"]["resourceId"]["videoId"]}'
+                for item in data["items"]
+            ]
+
+            await self.session.close()
+            return video_ids
+
     async def _extract_soundcloud_info(
         self, query: str, client_id: str
     ) -> Union[List, Dict]:
         url = await self._retreive_soundcloud_url(query, client_id)
 
         if "tracks" in url:
-            urls = []
-
-            for items in url.get("tracks"):
-                urls.append(items)
-
+            urls = [items for items in url.get("tracks")]
             return url, urls
 
         await self.set_session()
@@ -97,18 +108,15 @@ class AudioStreamFetcher:
             sound_info = ydl.extract_info(query, download=False)
 
             if "entries" in sound_info:
-                urls = []
-
-                for i, _ in enumerate(sound_info["entries"]):
-                    urls.append(sound_info["entries"][i]["webpage_url"])
-
-                return urls
+                return await self._retreive_youtube_playlist(
+                    re.findall(r"list=(\w+)", query)[0]
+                )
 
             return sound_info
 
     async def retrieve_audio(
         self, source: MusicPlatform = None, query: str = None, **kwargs
-    ) -> Dict:
+    ) -> Union[List, Dict]:
         task = None
 
         if source in YoutubeUri:
