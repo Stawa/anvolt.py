@@ -25,6 +25,7 @@ Explore the vast array of features available in **[anvolt.py](https://anvolt.ver
 - **Ease-of-Use Codes**: Design the package with simplicity and ease-of-use in mind, offering user-friendly codes and documentation
 - **Twitch API Integration**: Utilize the Twitch API to retrieve and display real-time data from Twitch streams
 - **Command-Line Interface**: Include a Command-Line Interface (CLI) for user-friendly access and control of the package's features
+- **Discord Music Functionality**: Play music via a Discord bot with support for YouTube and SoundCloud.
 
 ### <span class="emoji">📦</span> Installation
 

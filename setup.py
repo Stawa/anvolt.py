@@ -48,6 +48,9 @@ setup(
         "discord",
         "webhooks",
         "twitch",
+        "music",
+        "youtube",
+        "soundcloud",
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
