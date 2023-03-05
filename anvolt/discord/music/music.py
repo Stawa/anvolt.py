@@ -1,10 +1,10 @@
 from __future__ import annotations
-import functools
 from anvolt.discord.music.audio import AudioStreamFetcher, YoutubeUri, FFMPEG_OPTIONS
 from anvolt.models import MusicProperty, MusicEnums, MusicPlatform, QueueSession, errors
 from anvolt.discord import Event
 from discord.ext import commands
-from typing import List, Tuple, Union, Optional, Callable, Dict, Any
+from typing import List, Tuple, Union, Optional, Callable, Dict
+from pytube import YouTube
 import asyncio
 import discord
 import time
@@ -70,24 +70,42 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
     async def _create_player(
         self,
-        sound_info: Dict,
+        sound_info: Union[Dict, YouTube],
         audio: Dict,
         requester: discord.Member,
         volume: Union[int, float],
         loop: MusicEnums,
     ) -> MusicProperty:
+        if isinstance(sound_info, Dict):
+            audio_url = sound_info.get("url")
+            video_id = sound_info.get("id")
+            video_url = f"https://www.youtube.com/watch?v={sound_info.get('id')}"
+            video_title = sound_info.get("title")
+            video_duration = "LIVE"
+            video_thumbnails = sound_info.get("thumbnails")
+            is_live = sound_info.get("is_live")
+
+        if isinstance(sound_info, YouTube):
+            is_live = sound_info.streams.last().is_live
+            audio_url = sound_info.streams.last().url
+            video_id = sound_info.video_id
+            video_url = sound_info.watch_url
+            video_title = sound_info.title
+            video_duration = "LIVE" if is_live else sound_info.length
+            video_thumbnails = (
+                sound_info.vid_info.get("videoDetails", {})
+                .get("thumbnail", {})
+                .get("thumbnails")
+            )
+
         return MusicProperty(
-            audio_url=sound_info.get("url") if audio is None else audio.get("url"),
-            video_id=sound_info.get("id"),
-            video_url=sound_info.get("permalink_url")
-            if audio is not None
-            else f"https://www.youtube.com/watch?v={sound_info.get('id')}",
-            title=sound_info.get("title"),
-            duration=round(sound_info.get("duration") / 1000)
-            if audio
-            else ("LIVE" if sound_info.get("is_live") else sound_info.get("duration")),
-            thumbnails=sound_info.get("artwork_url" if audio is None else "thumbnails"),
-            is_live=sound_info.get("is_live") if audio is None else False,
+            audio_url=audio_url or audio.get("url"),
+            video_id=video_id or sound_info.get("id"),
+            video_url=video_url or sound_info.get("permalink_url"),
+            title=video_title or sound_info.get("title"),
+            duration=video_duration,
+            thumbnails=video_thumbnails or sound_info.get("artwork_url"),
+            is_live=is_live or False,
             requester=requester,
             start_time=time.time(),
             loop=loop,
@@ -182,14 +200,14 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         return decorator
 
-    def add_queue(self, ctx: commands.Context, player: MusicProperty) -> None:
+    async def add_queue(self, ctx: commands.Context, player: MusicProperty) -> None:
         self.queue.setdefault(ctx.guild.id, QueueSession()).queue.append(player)
 
-    def remove_queue(self, ctx: commands.Context, num: int) -> None:
+    async def remove_queue(self, ctx: commands.Context, num: int) -> None:
         if self.queue.get(ctx.guild.id):
             self.queue[ctx.guild.id].queue.pop(num)
 
-    def add_history(self, ctx: commands.Context, player: MusicProperty) -> None:
+    async def add_history(self, ctx: commands.Context, player: MusicProperty) -> None:
         self.history.setdefault(ctx.guild.id, QueueSession()).history.append(player)
 
     def parse_duration(self, duration: Union[str, float]) -> str:
@@ -233,6 +251,9 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         if parse_duration:
             current_duration = self.parse_duration(duration=current_duration)
+        
+        if currently_playing.duration == "LIVE":
+            current_duration = "LIVE"
 
         currently_playing.current_duration = current_duration
         return currently_playing
@@ -252,7 +273,9 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         voice_client = await channel.connect(
             cls=discord.VoiceClient, self_mute=mute, self_deaf=deafen
         )
-        self.bot.loop.create_task(self._check_inactivity(ctx))
+        self.bot.loop.create_task(self._check_inactivity(ctx)).add_done_callback(
+            self.handle_coroutine_exception
+        )
         return channel, voice_client
 
     @ensure_connection()
@@ -396,7 +419,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
     async def play_audio(self, ctx: commands.Context, player: MusicProperty):
         voice = ctx.voice_client
 
-        if voice.is_playing():
+        if ctx.guild.id in self.currently_playing:
             return
 
         source = discord.FFmpegPCMAudio(player.audio_url, options=FFMPEG_OPTIONS)
@@ -408,44 +431,62 @@ class AnVoltMusic(Event, AudioStreamFetcher):
             original=source, volume=player.volume / 100
         )
         self.currently_playing[ctx.guild.id] = player
-        self.add_history(ctx, player)
+        await self.add_history(ctx, player)
         await self.call_event(event_type="on_music_start", ctx=ctx, player=player)
+
+    async def create_player(
+        self,
+        ctx: commands.Context,
+        query: Union[str, MusicProperty],
+        volume: int,
+        loop: MusicEnums,
+        sound_info: List,
+    ) -> List[MusicProperty]:
+        player = query if isinstance(query, MusicProperty) else None
+        saved_players = []
+        task = None
+
+        for sound in sound_info:
+            if isinstance(sound, Dict):
+                audio, sound = await self._fetch_audio(
+                    sound.get("permalink_url") if audio else sound
+                )
+                player = await self._create_player(
+                    sound, audio, ctx.author, volume, loop
+                )
+
+            task = asyncio.ensure_future(
+                self._create_player(sound, None, ctx.author, volume, loop)
+            )
+            await asyncio.wait([task])
+            player = task.result()
+            saved_players.append(player)
+
+            if ctx.guild.id in self.currently_playing:
+                await self.add_queue(ctx=ctx, player=player)
+
+            await self.play_audio(ctx, player)
+
+        return saved_players
 
     @ensure_connection()
     async def play(
         self, ctx: commands.Context, query: Union[str, MusicProperty], **kwargs
     ) -> Optional[MusicProperty]:
-        voice = ctx.voice_client
         volume = kwargs.get("volume", self.default_volume)
         loop = kwargs.get("loop", MusicEnums.NO_LOOPS)
-        player = query if isinstance(query, MusicProperty) else None
+        audio, sound_info = await self._fetch_audio(query)
 
-        if not isinstance(query, MusicProperty):
-            audio, sound_info = await self._fetch_audio(query)
+        if not sound_info:
+            return None
 
-            if not sound_info:
-                return None
+        if isinstance(sound_info, List):
+            return await self.create_player(ctx, query, volume, loop, sound_info)
 
-            if isinstance(sound_info, List):
-                for item in sound_info:
-                    audio, sound_info = await self._fetch_audio(
-                        item.get("permalink_url") if audio else item
-                    )
-                    player = await self._create_player(
-                        sound_info, audio, ctx.author, volume, loop
-                    )
+        if ctx.guild.id in self.currently_playing:
+            self.task_loop(self.bot.loop, self.add_queue(ctx=ctx, player=player))
+            return player
 
-                    if voice.is_playing():
-                        self.add_queue(ctx=ctx, player=player)
-
-                    await self.play_audio(ctx, player)
-
-            if voice.is_playing():
-                self.add_queue(ctx=ctx, player=player)
-                return player
-
-            player = await self._create_player(
-                sound_info, None, ctx.author, volume, loop
-            )
+        player = await self._create_player(sound_info, audio, ctx.author, volume, loop)
 
         await self.play_audio(ctx, player)

@@ -94,4 +94,6 @@ class MusicPlatform(IntEnum):
 
     YOUTUBE_URL = 0
     YOUTUBE_QUERY = 1
-    SOUNDCLOUD = 2
+    YOUTUBE_PLAYLIST = 2
+    YOUTUBE_LIVESTREAM = 3
+    SOUNDCLOUD = 4

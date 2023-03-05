@@ -1,4 +1,4 @@
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict
 import discord
 
 
@@ -19,7 +19,7 @@ class MusicProperty(object):
         self.title: str = kwargs.get("title")
         self.duration: int = kwargs.get("duration")
         self.current_duration: Union[int, float] = kwargs.get("current_duration")
-        self.thumbnails: str = kwargs.get("thumbnails")
+        self.thumbnails: List[Dict] = kwargs.get("thumbnails")
         self.is_live: bool = kwargs.get("is_live")
         self.requester: discord.Member = kwargs.get("requester")
         self.volume: int = kwargs.get("volume")
