@@ -251,7 +251,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
 
         if parse_duration:
             current_duration = self.parse_duration(duration=current_duration)
-        
+
         if currently_playing.duration == "LIVE":
             current_duration = "LIVE"
 

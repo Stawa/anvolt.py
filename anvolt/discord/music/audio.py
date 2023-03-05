@@ -44,14 +44,17 @@ class AudioStreamFetcher:
         )
         soundcloud_pattern = re.compile("^https://soundcloud.com/")
 
-        if "liveStreamability" in YouTube(query).vid_info.get("playabilityStatus"):
-            return MusicPlatform.YOUTUBE_LIVESTREAM
+        if youtube_extractor.suitable(query):
+            return MusicPlatform.YOUTUBE_URL
 
         if re_compile.match(query):
             return MusicPlatform.YOUTUBE_PLAYLIST
 
         if re.match(soundcloud_pattern, query):
             return MusicPlatform.SOUNDCLOUD
+
+        if "liveStreamability" in YouTube(query).vid_info.get("playabilityStatus"):
+            return MusicPlatform.YOUTUBE_LIVESTREAM
 
         return MusicPlatform.YOUTUBE_QUERY
 
