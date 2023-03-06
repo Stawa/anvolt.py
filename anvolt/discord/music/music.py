@@ -21,7 +21,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         self.inactivity_timeout = kwargs.get("inactivity_timeout", 60)
         self.client_id = kwargs.get("client_id", None)
 
-        self.num = 0
+        self.num = 1
         self.queue: Dict[QueueSession] = {}
         self.history: Dict[QueueSession] = {}
         self.currently_playing: Dict[List[MusicProperty]] = {}
@@ -151,44 +151,18 @@ class AnVoltMusic(Event, AudioStreamFetcher):
             if ctx.guild.id not in self.combined_queue:
                 self.combined_queue[ctx.guild.id] = [current_playing] + queue.queue
 
-            next_track = self.combined_queue[ctx.guild.id][self.num]
-            self.task_loop(
-                self.bot.loop,
-                self.play(
-                    ctx,
-                    query=next_track,
-                    volume=current_playing.volume or self.default_volume,
-                    loop=MusicEnums.QUEUE_LOOPS,
-                ),
-            )
-
+            player = self.combined_queue[ctx.guild.id][self.num]
+            player.loop = MusicEnums.QUEUE_LOOPS
             self.num = (self.num + 1) % len(self.combined_queue[ctx.guild.id])
-            return
 
-        if current_playing.loop == MusicEnums.LOOPS:
-            self.task_loop(
-                self.bot.loop,
-                self.play(
-                    ctx,
-                    query=current_playing,
-                    volume=current_playing.volume or self.default_volume,
-                    loop=MusicEnums.LOOPS,
-                ),
-            )
-            return
-
-        if queue:
+        else:
             next_song = queue.queue.pop(0)
+            player = current_playing if loop == MusicEnums.LOOPS else next_song
+            player.loop = (
+                MusicEnums.LOOPS if loop == MusicEnums.LOOPS else MusicEnums.NO_LOOPS
+            )
 
-        self.task_loop(
-            self.bot.loop,
-            self.play(
-                ctx,
-                query=current_playing if loop == MusicEnums.LOOPS else next_song,
-                volume=current_playing.volume or self.default_volume,
-                loop=loop,
-            ),
-        )
+        self.task_loop(self.bot.loop, self.play_audio(ctx, player=player))
 
     def ensure_connection() -> Callable:
         def decorator(func: Callable):
@@ -419,7 +393,7 @@ class AnVoltMusic(Event, AudioStreamFetcher):
     async def play_audio(self, ctx: commands.Context, player: MusicProperty):
         voice = ctx.voice_client
 
-        if ctx.guild.id in self.currently_playing:
+        if ctx.voice_client.is_playing():
             return
 
         source = discord.FFmpegPCMAudio(player.audio_url, options=FFMPEG_OPTIONS)
@@ -431,7 +405,10 @@ class AnVoltMusic(Event, AudioStreamFetcher):
             original=source, volume=player.volume / 100
         )
         self.currently_playing[ctx.guild.id] = player
-        await self.add_history(ctx, player)
+
+        if player.loop != MusicEnums.LOOPS or MusicEnums.QUEUE_LOOPS:
+            await self.add_history(ctx, player)
+
         await self.call_event(event_type="on_music_start", ctx=ctx, player=player)
 
     async def create_player(
@@ -475,10 +452,14 @@ class AnVoltMusic(Event, AudioStreamFetcher):
     ) -> Optional[MusicProperty]:
         volume = kwargs.get("volume", self.default_volume)
         loop = kwargs.get("loop", MusicEnums.NO_LOOPS)
-        audio, sound_info = await self._fetch_audio(query)
 
-        if not sound_info:
-            return None
+        if isinstance(query, MusicProperty):
+            player = query
+        else:
+            audio, sound_info = await self._fetch_audio(query)
+            player = await self._create_player(
+                sound_info, audio, ctx.author, volume, loop
+            )
 
         if isinstance(sound_info, List):
             return await self.create_player(ctx, query, volume, loop, sound_info)
@@ -486,7 +467,5 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         if ctx.guild.id in self.currently_playing:
             self.task_loop(self.bot.loop, self.add_queue(ctx=ctx, player=player))
             return player
-
-        player = await self._create_player(sound_info, audio, ctx.author, volume, loop)
 
         await self.play_audio(ctx, player)

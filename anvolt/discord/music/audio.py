@@ -53,8 +53,11 @@ class AudioStreamFetcher:
         if re.match(soundcloud_pattern, query):
             return MusicPlatform.SOUNDCLOUD
 
-        if "liveStreamability" in YouTube(query).vid_info.get("playabilityStatus"):
-            return MusicPlatform.YOUTUBE_LIVESTREAM
+        try:
+            if "liveStreamability" in YouTube(query).vid_info.get("playabilityStatus"):
+                return MusicPlatform.YOUTUBE_LIVESTREAM
+        except:
+            pass
 
         return MusicPlatform.YOUTUBE_QUERY
 

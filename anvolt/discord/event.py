@@ -27,10 +27,10 @@ class Event:
     def handle_coroutine_exception(self, task: asyncio.Task) -> None:
         try:
             task.result()
-        except (asyncio.CancelledError, Exception) as e:
+        except (asyncio.CancelledError, Exception):
             pass
 
-    def task_loop(self, loop: asyncio.AbstractEventLoop, coro: coroutine):
+    def task_loop(self, loop: asyncio.AbstractEventLoop, coro: coroutine) -> None:
         try:
             loop.create_task(coro).add_done_callback(self.handle_coroutine_exception)
         except RuntimeError:
