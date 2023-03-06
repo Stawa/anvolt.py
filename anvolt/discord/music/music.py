@@ -33,6 +33,17 @@ class AnVoltMusic(Event, AudioStreamFetcher):
         if not discord.opus.is_loaded():
             discord.opus._load_default()
 
+    async def cleanup(self, ctx: commands.Context):
+        while True:
+            await asyncio.sleep(10)
+
+            if ctx.guild.id in self.queue:
+                self.currently_playing.pop(ctx.guild.id, None)
+                self.queue.pop(ctx.guild.id, None)
+
+            if ctx.guild.id in self.combined_queue:
+                self.combined_queue.pop(ctx.guild.id, None)
+
     async def _check_inactivity(self, ctx: commands.Context):
         if not self.inactivity_timeout:
             return
@@ -48,6 +59,13 @@ class AnVoltMusic(Event, AudioStreamFetcher):
                 if len(members) == 0:
                     await asyncio.sleep(self.inactivity_timeout)
                     await ctx.voice_client.disconnect(force=True)
+                    await self.call_event(
+                        event_type="on_inactivity_timeout",
+                        ctx=ctx,
+                        error=e.InactivityTimeout(
+                            "The bot has been automatically disconnected by inactivity_timeout"
+                        ),
+                    )
 
     async def _check_connection(self, ctx: commands.Context) -> bool:
         if not ctx.voice_client:
@@ -209,6 +227,14 @@ class AnVoltMusic(Event, AudioStreamFetcher):
     async def now_playing(
         self, ctx: commands.Context, parse_duration: bool = True
     ) -> Optional[MusicProperty]:
+        if not ctx.voice_client:
+            await self.call_event(
+                event_type="on_music_error",
+                ctx=ctx,
+                error=e.PlayerEmpty("No song is currently being played."),
+            )
+            return
+
         currently_playing = self.currently_playing.get(ctx.guild.id)
 
         if not currently_playing:
@@ -469,3 +495,4 @@ class AnVoltMusic(Event, AudioStreamFetcher):
             return player
 
         await self.play_audio(ctx, player)
+        self.task_loop(self.bot.loop, self.cleanup(ctx))
